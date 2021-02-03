@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>สนทนากฎหมายไทย</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Kanit", sans-serif;
+        }
+
+        header {
+            background: url(https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1978&q=80);
+            text-align: center;
+            width: 100%;
+            height: auto;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header .overlay {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            color: #ffffff;
+            text-shadow: 2px 2px 2px #333333;
+            background-image: linear-gradient(135deg, #9f05ff69 10%, #fd5e086b 100%);
+        }
+
+        h1 {
+            font-size: 70px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 1%;
+            width: 25%;
+            background-color: #f7e6ef;
+            border-radius: 25px;
+            margin-left: 3%;
+            position:fixed;
+        }
+
+        li a {
+            display: block;
+            color: #000;
+            padding: 8px 0 8px 16px;
+            text-decoration: none;
+        }
+
+        li a.active {
+            background-color: #985495;
+            color: white;
+            font-size: x-large;
+            text-shadow: 1px 1px 1px #333333;
+            border-radius: 25px;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+            text-shadow: 1px 1px 1px #333333;
+            border-radius: 25px;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        div .Post {
+            list-style-type: none;
+            background-color: #f7e6ef;
+            border-radius: 25px;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body style="background-color:rgb(215, 182, 223);">
+
+    <header>
+        <div class="overlay">
+            <br>
+            <h1>ปรึกษาปัญหากฎหมายไทย</h1>
+            <br>
+        </div>
+    </header>
+
+    <br>
+
+    <ul>
+        <li><a class="active">หมวดหมู่</a></li>
+        <li><a href="/กฎหมายการละเมิด(Violation)">กฎหมายการละเมิด(Violation)</a></li>
+        <li><a href="/กฎหมายครอบครัว(Family)">กฎหมายครอบครัว(Family)</a></li>
+        <li><a href="/กฎหมายแรงงาน(Labor)">กฎหมายแรงงาน(Labor)</a></li>
+        <li><a href="/กฎหมายเอกเทศสัญญา(Contract)">กฎหมายเอกเทศสัญญา(Contract)</a></li>
+        <li><a href="/กฎหมายอาญา(Criminal)">กฎหมายอาญา(Criminal)</a></li>
+    </ul>
+
+    <div style="margin-left:29%;padding:1px 20px;margin-right: 3%; list-style-type: none; background-color: #f7e6ef; border-radius: 25px; height: 100%;">
+        <br>
+
+        {% for row in datas %}
+        <p>{{row.2}}<a href="/{{row.3}}" class="btn btn-link btn-md">{{row.3}}</a></p>
+        <p><b>ผู้โพสต์ : </b>{{row.1}}</p>
+        <p><b>เมื่อ : </b>{{row.4}}</p>
+        <a href="/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">แก้ไข</a>
+        <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">ลบ</a>
+        <hr color="#000">
+        <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">อัพเดทข้อมูลของท่าน</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/update" method="POST">
+                            <div class="form-group">
+                                <label>ชื่อ - นามสกุล :</label>
+                                <input type="hidden" name="id" value="{{row.0}}">
+                                <input type="text" class="form-control" name="name" value="{{row.1}}">
+                            </div>
+                            <div class="form-group">
+                                <label>คำถาม :</label>
+                                <input type="text" class="form-control" name="question" value="{{row.2}}">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">อัพเดท</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <center>
+            <a href="/" class="btn btn-primary">คำถามทั้งหมด</a>
+        </center>
+        <br>
+    </div>
+    
+</body>
+
+</html>
